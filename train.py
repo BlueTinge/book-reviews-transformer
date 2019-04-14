@@ -2,6 +2,7 @@ import torch
 from torch import optim
 from torch import nn
 from dataloader import get_imdb
+from dataloader import get_amazon
 from model import Net
 
 try:
@@ -51,7 +52,7 @@ def train(max_length,model_size,
     """
         Trains the classifier on the IMDB sentiment dataset
     """
-    train, test, vectors, vocab = get_imdb(batch_size,max_length=max_length)
+    train, test, vectors, vocab = get_amazon(batch_size,max_length=max_length)
 
     model = Net(
                 model_size=model_size,embeddings=vectors,
@@ -74,7 +75,7 @@ def train(max_length,model_size,
             loss.backward()
             optimizer.step()
             loss_sum += loss.item()
-        print("Epoch: {}, Loss mean: {}\n".format(i,j,loss_sum / j))
+        print("Epoch: {}, Loss mean: {}\n".format(i,j,loss_sum / (j+1)))
 
         # Validate on test-set every epoch
         val(model,test,vocab,device)
