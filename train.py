@@ -42,13 +42,13 @@ def val(model,test,vocab,device):
             model_out = model(b.text[0].to(device)).to("cpu").numpy()
             correct += (model_out.argmax(axis=1) == b.label.numpy()).sum()
             total += b.label.size(0)
-        print("{}%, {}/{}".format(correct / total,correct,total))
+        print("{}%, {}/{}".format(correct / total * 100,correct,total))
 
 def train(max_length,model_size,
             epochs,learning_rate,
             device,num_heads,num_blocks,
             dropout,train_word_embeddings,
-            batch_size):
+            batch_size, model_path, load_model):
     """
         Trains the classifier on the IMDB sentiment dataset
     """
@@ -65,10 +65,19 @@ def train(max_length,model_size,
     optimizer = optim.Adam((p for p in model.parameters() if p.requires_grad),lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
 
-    
+    if load_model:
+        print("Loading model from {}...".format(load_model))
+        model = torch.load(load_model)
+        model.eval()
+        # Validate after loading
+        val(model,test,vocab,device)
+
+    val(model, test, vocab, device)
+
     for i in range(0,epochs+1):
         loss_sum = 0.0
         model.train()
+        print("\n\nTraining epoch {}...".format(i))
         for j,b in enumerate(iter(tqdm(train))):
             optimizer.zero_grad()
             model_out = model(b.text[0].to(device))
@@ -80,6 +89,18 @@ def train(max_length,model_size,
 
         # Validate on test-set every epoch
         val(model,test,vocab,device)
+
+        #Save model
+        if model_path:
+            print("Saving model to {}...".format(model_path))
+            torch.save(model, model_path)
+
+        # Load model and test
+        #model = torch.load(model_path)
+        #model.eval()
+        # Validate again to see if its the same
+        #val(model,test,vocab,device)
+
 
 if __name__ == "__main__":
     import argparse
@@ -105,9 +126,14 @@ if __name__ == "__main__":
     ap.add_argument("--dropout",default=0.1,type=float,dest="dropout",help="Dropout (not keep_prob, but probability of ZEROING \
                                                                     during training, i.e. keep_prob = 1 - dropout)")
 
-    ap.add_argument("--train_word_embeddings",type=bool,default=True,dest="train_word_embeddings",help="Train GloVE word embeddings")
+    ap.add_argument("--train_word_embeddings",type=bool,default=True,dest="train_word_embeddings",help="Train word embeddings during training")
     
     ap.add_argument("--batch_size",type=int,default=128,help="Batch size")
+
+    ap.add_argument("--model_path",default="saved.model",help="Path to save model to after every epoch. Give empty string to disable saving.")
+
+    ap.add_argument("--load_model", default="", dest="load_model", help="If given, will load the model from this path")
+
     args = vars(ap.parse_args())
 
     train(**args)

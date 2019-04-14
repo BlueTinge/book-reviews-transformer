@@ -73,7 +73,7 @@ def get_amazon(batch_size,max_length):
     print("")
 
     path='.vector_cache/'
-    model_name='vec1.txt'
+    model_name='plainwordembeds'
 
     #load word2vec
     vectors = Vectors(name=model_name, cache=path)  # model_name + path = path_to_embeddings_file
