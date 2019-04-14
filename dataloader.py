@@ -1,6 +1,7 @@
 from torchtext import data
 from torchtext import datasets
 from torchtext.vocab import GloVe
+from torchtext.vocab import Vectors
 import string
 
 def tokenize(input):
@@ -71,9 +72,24 @@ def get_amazon(batch_size,max_length):
     print(('len(test)', len(test)))
     print("")
 
+    path='.vector_cache/'
+    model_name='vec1.txt'
+
+    #load word2vec
+    vectors = Vectors(name=model_name, cache=path)  # model_name + path = path_to_embeddings_file
+
     # build the vocabulary
-    TEXT.build_vocab(train, vectors=GloVe(name='42B', dim=300,max_vectors=500000))
+    # provide the embedded vectors when you call build_vocab function
+    TEXT.build_vocab(
+        train,
+        #max_size=self.config.vocab_maxsize,
+        #min_freq=self.config.vocab_minfreq,
+        vectors=vectors
+    )
     LABEL.build_vocab(train)
+
+    #set embedded vectors
+    TEXT.vocab.set_vectors(vectors.stoi, vectors.vectors, vectors.dim)
 
     # print vocab information
     print(('len(TEXT.vocab)', len(TEXT.vocab)))
