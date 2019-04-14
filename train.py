@@ -59,6 +59,7 @@ def train(max_length,model_size,
                 max_length=max_length,num_heads=num_heads,
                 num_blocks=num_blocks, dropout=dropout,
                 train_word_embeddings=train_word_embeddings,
+                n_classes=5,
                 ).to(device)
 
     optimizer = optim.Adam((p for p in model.parameters() if p.requires_grad),lr=learning_rate)

@@ -107,7 +107,7 @@ class Net(nn.Module):
         A neural network that encodes a sequence
         using a Transformer network
     """
-    def __init__(self,embeddings,max_length,model_size=128,num_heads=4,num_blocks=1,dropout=0.1,train_word_embeddings=True):
+    def __init__(self,embeddings,max_length,model_size=128,num_heads=4,num_blocks=1,dropout=0.1,train_word_embeddings=True, n_classes=1):
         super(Net,self).__init__()
         self.embeddings = nn.Embedding.from_pretrained(embeddings,freeze=not train_word_embeddings)
         self.model_size = model_size
@@ -122,7 +122,7 @@ class Net(nn.Module):
                         num_heads,
                         dropout=dropout
                         )
-        self.output = nn.Linear(self.model_size,2)
+        self.output = nn.Linear(self.model_size,n_classes)
 
     def forward(self,x):
         x_size = x.size()
