@@ -60,7 +60,7 @@ def get_amazon(batch_size,max_length):
     # make splits for data
     train, test = data.TabularDataset.splits(
         path='.data/amazon/', format='csv', skip_header=False,
-        train='dataset_train.csv', test='dataset_test.csv',
+        train='training.csv', test='testing.csv',
         fields=[
             ('text', TEXT),
             ('label', LABEL),
