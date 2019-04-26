@@ -130,8 +130,8 @@ def val(model,test,vocab,device):
         print("Three-Star: {}%, {}/{}".format(three_star_correct / three_star_total * 100, three_star_correct, three_star_total))
         print("Four-Star: {}%, {}/{}".format(four_star_correct / four_star_total * 100, four_star_correct, four_star_total))
         print("Five-Star: {}%, {}/{}".format(five_star_correct / five_star_total * 100, five_star_correct, five_star_total))
-        print("Good: {}%, {}/{}".format(one_two_correct / (one_star_total + two_star_total) * 100, one_two_correct, (one_star_total + two_star_total)))
-        print("Bad: {}%, {}/{}".format(four_five_correct / (four_star_total + five_star_total) * 100, four_five_correct, (four_star_total + five_star_total)))
+        print("Bad: {}%, {}/{}".format(one_two_correct / (one_star_total + two_star_total) * 100, one_two_correct, (one_star_total + two_star_total)))
+        print("Good: {}%, {}/{}".format(four_five_correct / (four_star_total + five_star_total) * 100, four_five_correct, (four_star_total + five_star_total)))
 
 def train(max_length,model_size,
             epochs,learning_rate,
