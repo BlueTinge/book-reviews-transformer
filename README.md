@@ -1,11 +1,9 @@
 # Transformer Networks for Sentiment Analysis
 
-Implements a simple binary classifier for sentiment analysis, embedding sentences using a Transformer network. Transformer networks were introduced in the paper [All You Need is Attention](https://arxiv.org/abs/1706.03762), where the authors achieve state of the art performance on several NLP tasks.
+Implements a simple classifier for sentiment analysis, embedding sentences using a Transformer network. Transformer networks were introduced in the paper [All You Need is Attention](https://arxiv.org/abs/1706.03762), where the authors achieve state of the art performance on several NLP tasks.
 
 ## Usage
-Run `python train.py`, to train a model on the IMDB reviews dataset (it will be downloaded automatically through `torchtext` if it's not present). This uses trained positional embeddings for the transformer networks, as opposed to the sinusoidal positional encodings introduced in the paper. 
-
-To use the `Transformer` module in another project, be sure to add some sort of positional encoding to the input before passing it to the module, as these are not automatically added. 
+Run `python train.py`, to train a model on the an Amazon book reviews dataset.  
 
 #### Options
 ```
